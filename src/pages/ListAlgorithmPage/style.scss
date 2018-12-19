@@ -1,0 +1,26 @@
+.alg {
+  &_header {
+    background: white;
+    padding: 10px;
+  }
+
+  &_body {
+    padding: 20px 0;
+    display: flex;
+  }
+
+  &_card {
+    width: 300px;
+    margin: 10px 10px 10px 0;
+    &_image {
+      max-height: 150px;
+      min-height: 150px;
+    }
+    .ant-card-actions {
+      li {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}

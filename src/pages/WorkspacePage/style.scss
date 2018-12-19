@@ -1,0 +1,17 @@
+.workspace {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 200px);
+
+  &_editor {
+    flex: 1;
+  }
+
+  &_vizualization {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    white-space: pre-wrap;
+  }
+}

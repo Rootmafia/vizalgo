@@ -1,0 +1,7 @@
+.app_template {
+  height: 100vh;
+  &_content {
+    display: flex;
+    padding: 35px 50px;
+  }
+}

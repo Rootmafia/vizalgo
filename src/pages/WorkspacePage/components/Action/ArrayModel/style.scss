@@ -1,0 +1,26 @@
+$column-bg: #eabf83;
+$column-active-bg: #ec7b7b;
+
+.model_array {
+  &_container {
+    cursor: pointer;
+    margin: auto;
+    display: flex;
+  }
+
+  &_item {
+    margin-left: 10px;
+    margin-top: auto;
+    background: $column-bg;
+    width: 60px;
+    text-align: center;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    user-select: none;
+    &.active {
+      background: $column-active-bg;
+    }
+  }
+}
