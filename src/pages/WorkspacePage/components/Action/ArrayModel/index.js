@@ -23,17 +23,16 @@ class ArrayModel extends React.Component {
 
   componentDidMount() {
     let i = 0;
-//    setInterval(() => {
-//      console.log(i % 2);
-//      this.setState({ value: i++ % 2 ? [this.state.value[4], ...this.state.value.slice(0, 4)] : this.state.value });
-//    }, 1000);
+    setInterval(() => {
+      this.setState({ value: i++ % 2 ? [this.state.value[4], ...this.state.value.slice(0, 4)] : this.state.value });
+    }, 1000);
   }
 
   render() {
     const { value } = this.state;
 
     let displayData = value.map((child, i) => {
-      return { y: i * 30, height: child.value * 20, key: child.id };
+      return { y: i * 30, x: i > 10 ? 20 : 0, height: child.value * 20, key: child.id };
     });
     return (
       <div className="model_array_container">
@@ -48,16 +47,17 @@ class ArrayModel extends React.Component {
           update={({ y, height }) => ({ y, height, scale: 1 })}
           config={{ mass: 4, tension: 100, friction: 40 }}
           trail={100}>
-          {(el) => ({ opacity, y, height }) => (
+          {(el, _, i) => ({ opacity, y, x, height }) => (
             <animated.div
               className="model_array_item"
               style={{
                 opacity,
                 height,
+                marginTop: `10px`,
                 transform: y.interpolate(y => `translate3d(${y}px,0,0)`)
               }}
             >
-              {el.value}
+              {i}
             </animated.div>
           )}
         </Transition>

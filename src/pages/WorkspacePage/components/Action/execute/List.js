@@ -1,12 +1,15 @@
 import isNumber from 'lodash/isNumber';
 
+/**
+ * controls.setActive
+ */
 export class List {
-  constructor(arr, initial = true, controls) {
+  constructor(arr, initial = true, { controls, delay }) {
     if (initial) {
-      return new Proxy(new List(arr, false, controls), {
+      return new Proxy(new List(arr, false, { controls, delay }), {
         get: function (obj, prop) {
           if (isNumber(prop)) {
-            console.log(`GET VALUE ${prop}`);
+            this.controls.setActive(prop);
             return obj.values[prop];
           }
 
@@ -14,11 +17,19 @@ export class List {
             return obj[prop];
           }
 
+
+          if (prop in Object.getOwnPropertyNames(Array.prototype)) {
+            return this.values[prop];
+          }
+
+
+
           return obj[prop];
         }
       });
     }
 
+    this.delay = controls;
     this.controls = controls;
     this.values = arr || [];
   }
@@ -31,7 +42,7 @@ export class List {
 
   * [Symbol.iterator]() {
     for (let i = 0; i < this.values.length; i++) {
-      console.log(`GET VALUE ${i}`);
+      this.controls.setActive(i);
       yield this.values[i];
     }
   }
