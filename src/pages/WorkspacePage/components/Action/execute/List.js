@@ -6,18 +6,26 @@ class Item {
   constructor(value) {
     this.value = value;
     this.id = uuid4();
+    this.active = false;
   }
 
-  valueOf(){
-    return this.value
+  valueOf() {
+    return this.value;
   }
 }
+
+const swap = (obj) => (from, to) => {
+  let temp = obj;
+  obj[from] = obj[to];
+  obj[to] = temp;
+  console.log("SET", from, to)
+};
 
 /**
  * controls.setValue
  * controls.setActive
  */
-export const buildArray = (arr, triggers, addActions = {}) => {
+export const buildArray = (arr, triggers, addActions = { swap }) => {
   const values = arr.map(value => new Item(value));
 
   triggers.setValue(values);
@@ -33,11 +41,11 @@ export const buildArray = (arr, triggers, addActions = {}) => {
        */
       get: function (obj, prop) {
         if (Object.keys(addActions).includes(prop)) {
-          return addActions[prop](obj);
+          return addActions[prop](obj, triggers);
         }
 
         if (isNumber(prop)) {
-//          triggers.setActive([...obj][prop].id);
+          console.log("GET", prop)
           return obj[prop];
         }
 
@@ -56,9 +64,9 @@ export const buildArray = (arr, triggers, addActions = {}) => {
        * @return {boolean}
        */
       set: function (obj, prop, value) {
+        console.log("SET", prop)
         if (value && value.id) {
-          Reflect.set(obj, prop, value);
-//          triggers.setValue(obj);
+          Reflect.set(obj, prop, ({ ...value, active: false }));
         } else {
           Reflect.set(obj, prop, new Item(value));
         }
@@ -68,6 +76,8 @@ export const buildArray = (arr, triggers, addActions = {}) => {
     }
   );
 };
+
+
 
 
 

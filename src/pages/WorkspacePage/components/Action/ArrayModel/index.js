@@ -53,7 +53,7 @@ class ArrayModel extends React.Component {
     const { value, activeElement } = this.props;
 
     let displayData = value.map((child, i) => {
-      return { y: i * 30, x: i > 10 ? 20 : 0, height: child.value * 20, key: child.id };
+      return { y: i * 30, x: i > 10 ? 20 : 0, height: child.value * 20, key: child.id, active: child.active };
     });
     return (
       <div className="model_array_container">
