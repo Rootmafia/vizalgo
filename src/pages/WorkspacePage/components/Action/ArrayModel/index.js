@@ -1,5 +1,4 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
 import { Transition, animated } from 'react-spring';
 import './style.scss';
 import { ANIMATION_TIME } from '../constants';
@@ -9,31 +8,11 @@ class ArrayModel extends React.Component {
     value: []
   };
 
-  state = {
-    value: this.props.value
-  };
-
-  componentDidUpdate({ value: prevValue }) {
-    const { value } = this.props;
-    if (!isEqual(value, prevValue)) {
-      this.setState({ value: this.props.value });
-    }
-  }
-
-  componentDidMount() {
-//    let i = 0;
-//    setInterval(() => {
-//      this.setState({ value: i++ % 2 ? [this.state.value[4], ...this.state.value.slice(0, 4)] : this.state.value });
-//    }, 1000);
-  }
-
   _isActive = (key) => {
     const { activeElement } = this.props;
     if (!activeElement) {
       return false;
     }
-
-    console.log(activeElement, key, activeElement.length ? activeElement.includes(key) : activeElement === key);
 
     return activeElement.length ? activeElement.includes(key) : activeElement === key;
   };
@@ -50,10 +29,15 @@ class ArrayModel extends React.Component {
   };
 
   render() {
-    const { value, activeElement } = this.props;
+    const { value } = this.props;
 
     let displayData = value.map((child, i) => {
-      return { y: i * 30, x: i > 10 ? 20 : 0, height: child.value * 20, key: child.id, active: child.active };
+      return {
+        y: i * 30,
+        x: i > 10 ? 20 : 0,
+        height: child.value * 10,
+        key: child.id,
+      };
     });
     return (
       <div className="model_array_container">
@@ -62,7 +46,7 @@ class ArrayModel extends React.Component {
           items={displayData}
           keys={d => d.height}
           initial={null}
-          from={{ height: 0, opacity: 0, scale: 1, marginTop: 0, background: `rgb(42, 147, 175)` }}
+          from={{ height: 0, opacity: 0, scale: 1, marginTop: 0, background: 'rgb(42, 147, 175)' }}
           leave={{ height: 0, opacity: 0 }}
           enter={this.enter}
           update={this.enter}

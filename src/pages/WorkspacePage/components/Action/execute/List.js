@@ -5,7 +5,7 @@ const isNumber = (prop) => typeof prop !== 'symbol' && !isNaN(prop);
 class Item {
   constructor(value) {
     this.value = value;
-    this.id = uuid4();
+    this.id = `id:${value}`;
     this.active = false;
   }
 
@@ -14,11 +14,12 @@ class Item {
   }
 }
 
-const swap = (obj) => (from, to) => {
-  let temp = obj;
+const swap = (obj, result) => (from, to) => {
+  let temp = obj[from];
+  result.push({ type: 'GET', activeElement: [obj[from].id, obj[to].id] });
   obj[from] = obj[to];
   obj[to] = temp;
-  console.log("SET", from, to)
+  result.push({ type: 'SET', nextValue: [...obj] });
 };
 
 /**
@@ -41,19 +42,13 @@ export const buildArray = (arr, triggers, result, addActions = { swap }) => {
        */
       get: function (obj, prop) {
         if (Object.keys(addActions).includes(prop)) {
-          return addActions[prop](obj, triggers);
+          return addActions[prop](obj, result);
         }
 
         if (isNumber(prop)) {
-          result.push({type: 'GET', index: prop});
+          result.push({ type: 'GET', activeElement: obj[prop].id });
           return obj[prop];
         }
-
-        if (Object.keys(triggers).includes(prop)) {
-          triggers[prop](obj);
-          return obj[prop];
-        }
-
 
         return obj[prop];
       },
@@ -65,13 +60,13 @@ export const buildArray = (arr, triggers, result, addActions = { swap }) => {
        * @return {boolean}
        */
       set: function (obj, prop, value) {
-        result.push({type: 'SET', index: prop});
         if (value && value.id) {
           Reflect.set(obj, prop, ({ ...value, active: false }));
         } else {
           Reflect.set(obj, prop, new Item(value));
         }
 
+        result.push({ type: 'SET', nextValue: [...obj] });
         return true;
       }
     }

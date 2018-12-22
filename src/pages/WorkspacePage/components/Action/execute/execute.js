@@ -1,12 +1,23 @@
 import delay from 'delay';
 import { buildArray } from './List';
 import { ANIMATION_TIME } from '../constants';
-import { bubbleSort } from '../sortings';
+import { bubbleSort, selectSort } from '../sortings';
 
 export const execute = async (val, { setActive, setValue }) => {
   let result = [];
-  const a = buildArray([2, 3, 4, 9, 1, 5, 10], { setActive, setValue }, result);
+  const a = buildArray([...Array(40)].map((_, i) => i).reverse(), { setActive, setValue }, result);
 
-  bubbleSort(a);
+  await selectSort(a);
+  for (let item of result) {
+    if (item.type === 'GET') {
+      setActive(item.activeElement);
+      await delay(ANIMATION_TIME);
+    } else {
+      setValue(item.nextValue);
+      await delay(ANIMATION_TIME);
+    }
+  }
+  setActive(null);
+
   console.log(result);
 };

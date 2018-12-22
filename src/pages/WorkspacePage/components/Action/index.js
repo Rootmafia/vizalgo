@@ -36,7 +36,7 @@ class Action extends React.Component {
 
     const { activeElement, value } = this.state;
     return (
-      <code className="workspace_vizualization">
+      <>
         <div>{isRunning ? 'Running ....' : 'Vizualization'}<br/></div>
         {
           isRunning && (
@@ -46,7 +46,7 @@ class Action extends React.Component {
             />
           )
         }
-      </code>
+      </>
     );
   }
 }
