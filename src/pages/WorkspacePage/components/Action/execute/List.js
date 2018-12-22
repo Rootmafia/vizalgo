@@ -25,7 +25,7 @@ const swap = (obj) => (from, to) => {
  * controls.setValue
  * controls.setActive
  */
-export const buildArray = (arr, triggers, addActions = { swap }) => {
+export const buildArray = (arr, triggers, result, addActions = { swap }) => {
   const values = arr.map(value => new Item(value));
 
   triggers.setValue(values);
@@ -45,7 +45,7 @@ export const buildArray = (arr, triggers, addActions = { swap }) => {
         }
 
         if (isNumber(prop)) {
-          console.log("GET", prop)
+          result.push({type: 'GET', index: prop});
           return obj[prop];
         }
 
@@ -53,6 +53,7 @@ export const buildArray = (arr, triggers, addActions = { swap }) => {
           triggers[prop](obj);
           return obj[prop];
         }
+
 
         return obj[prop];
       },
@@ -64,7 +65,7 @@ export const buildArray = (arr, triggers, addActions = { swap }) => {
        * @return {boolean}
        */
       set: function (obj, prop, value) {
-        console.log("SET", prop)
+        result.push({type: 'SET', index: prop});
         if (value && value.id) {
           Reflect.set(obj, prop, ({ ...value, active: false }));
         } else {
